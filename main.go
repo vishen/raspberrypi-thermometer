@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -35,6 +34,8 @@ func main() {
 }
 
 func findDeviceID(devicesDir string) (string, error) {
+	log.Printf("Looking for device in %q", devicesDir)
+
 	fis, err := os.ReadDir(devicesDir)
 	if err != nil {
 		return "", err
@@ -44,7 +45,7 @@ func findDeviceID(devicesDir string) (string, error) {
 			return fi.Name(), nil
 		}
 	}
-	return "", errors.New("unable to find device id")
+	return "", fmt.Errorf("no device id found in %q", devicesDir)
 }
 
 func deviceTemperature(devicesDir, deviceID string) (float32, error) {
