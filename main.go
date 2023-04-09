@@ -34,14 +34,12 @@ func main() {
 }
 
 func findDeviceID(devicesDir string) (string, error) {
-	log.Printf("Looking for device in %q", devicesDir)
-
 	fis, err := os.ReadDir(devicesDir)
 	if err != nil {
 		return "", err
 	}
 	for _, fi := range fis {
-		if fi.IsDir() && strings.Contains(fi.Name(), "-") {
+		if strings.Contains(fi.Name(), "-") {
 			return fi.Name(), nil
 		}
 	}
@@ -53,7 +51,7 @@ func deviceTemperature(devicesDir, deviceID string) (float32, error) {
 	if err != nil {
 		return 0, err
 	}
-	t, err := strconv.Atoi(string(temp))
+	t, err := strconv.Atoi(strings.TrimSpace(string(temp)))
 	if err != nil {
 		return 0, err
 	}
